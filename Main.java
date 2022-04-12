@@ -2,8 +2,9 @@
 public class Main {
 
     public static void main(String[] args) {
-	    DerivativeCalculator calc = new DerivativeCalculator();
+	    DerivativeCalculator calc = new DerivativeCalculator('x');
 
 	    System.out.println(calc.makeTree("((3 * x) + 1)"));
+	    calc.TestDerivative("((3 * x) + 1)");
     }
 }
