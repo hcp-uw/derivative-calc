@@ -138,7 +138,7 @@ public class DerivativeCalculator {
         ExpressionNode firstNode = new ExpressionNode("*");
         ExpressionNode exponent = new ExpressionNode(root.right.value);
 
-        root.right = new ExpressionNode("-", root.right.value, "1");
+        root.right = new ExpressionNode("1", root.right.value, "1");
         ExpressionNode baseCopy = copyTree(root.left);
         firstNode.left = root;
         firstNode.right = new ExpressionNode(derive(baseCopy), exponent, "*");
@@ -168,7 +168,7 @@ public class DerivativeCalculator {
             root = productRule(root);
         }
         else if (root.value.equals("^")){
-
+            root = powerRule(root);
         }
         else {
             root.value = "0";
@@ -193,6 +193,10 @@ public class DerivativeCalculator {
     }
 
     private ExpressionNode quotientRule(ExpressionNode root) {
+
+        // left side is like product rule but -
+
+        // right side is original right side squared
         return root;
     }
     private boolean containsOperator(char str) {
@@ -210,6 +214,63 @@ public class DerivativeCalculator {
             newNode.left = copyTree(root.left);
             newNode.right = copyTree(root.right);
             return newNode;
+        }
+        return root;
+    }
+
+    private ExpressionNode simplify(ExpressionNode root) {
+        String originalValue = root.value;
+        if (root.value.equals("+")) {
+            if (root.left.value.equals("0")) {
+                root.value = root.right.value;
+            }
+            else if (root.right.value.equals("0")) {
+                root.value = root.left.value;
+            }
+        }
+        else if (root.value.equals("*")) {
+            if (root.left.value.equals("0") || root.right.value.equals("0")) {
+                root.value = "0";
+            }
+            else if (root.right.value.equals("1")) {
+                root.value = root.left.value;
+            }
+            else if (root.left.value.equals("1")) {
+                root.value = root.right.value;
+            }
+        }
+        else if (root.value.equals("^")) {
+            if (root.right.value.equals("1")) {
+                root.value = root.left.value;
+            }
+            else if (root.right.value.equals("0") || root.left.value.equals("1")) {
+                root.value = "1";
+            }
+
+        }
+        else if (root.value.equals("/")) {
+            if (root.right.value.equals("1")) {
+                root.value = root.left.value;
+            }
+            else if (root.left.value.equals("0")) {
+                root.value =  "0";
+            }
+            else if (root.left.value.equals(root.right.value)) {
+                root.value = "1";
+            }
+        }
+        else if (root.value.equals("-")) {
+            if (root.left.value.equals(root.right.value)) {
+                root.value = "0";
+            }
+            else if (root.right.equals("0")) {
+                root.value = root.left.value;
+            }
+        }
+        // Need a check for if both left and right are numbers, then perform operation
+        if (!originalValue.equals(root.value)) {
+            root.left = null;
+            root.right = null;
         }
         return root;
     }
