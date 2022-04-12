@@ -1,3 +1,4 @@
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -7,11 +8,15 @@ public class DerivativeCalculator {
     private final char[] operators = {'+', '*', '-', '/', '^'};
 
     private char var;
-    public DerivativeCalculator(String var) {
+    public DerivativeCalculator(char var) {
         this.var = var;
     }
     //  worry about input later
-
+    public ExpressionNode TestDerivative(String s) {
+        ExpressionNode root = makeTree(s);
+        root = derive(root);
+        return root;
+    }
     // input Formatting: ex. (x + 1)
     // this sets up the tree
     //
@@ -121,11 +126,9 @@ public class DerivativeCalculator {
     private ExpressionNode derive(ExpressionNode root) {
         if (root != null) {
             if (containsOperator(root.value.charAt(0))) {
-
             }
         }
     }
-
      */
 
 
@@ -135,42 +138,48 @@ public class DerivativeCalculator {
 
     }
 
-    private String derive(ExpressionNode root) {
+    private ExpressionNode derive(ExpressionNode root) {
         if (root == null) {
             return null;
         }
-        if (root.value.equals(var)) {
-            return 1;
+        if (root.value.equals(var +"")) {
+            root.value = "1";
         }
-        if (root.value.equals("+")){
+        else if (root.value.equals("+") || root.value.equals("-")){
+            root.left = derive(root.left);
+            root.right = derive(root.right);
 
         }
-        if (root.value.equals("-")){
+
+        else if (root.value.equals("/")){
 
         }
-        if (root.value.equals("/")){
+        else if (root.value.equals("*")){
+            root = productRule(root);
+        }
+        else if (root.value.equals("^")){
 
         }
-        if (root.value.equals("*")){
-
-        }
-        if (root.value.equals("+")){
-
-        }
-        if (root.value.equals("+")){
-
+        else {
+            root.value = "0";
+            
         }
         /* first print data of node */
-        System.out.print(root.key + " ");
+        // System.out.print(root.value + " ");
 
         /* then recur on left subtree */
-        derive(root.left);
+        //derive(root.left);
 
         /* now recur on right subtree */
-        derive(root.right);
+        //derive(root.right);
+        return root;
     }
-    private String productRule(String input) {
-        return "";
+    private ExpressionNode productRule(ExpressionNode root) {
+        root.value = "+";
+        ExpressionNode rootLeftHolder = copyTree(root.left);
+        root.left = new ExpressionNode(root.left, derive(root.right), "*");
+        root.right = new ExpressionNode(root.right, derive(rootLeftHolder), "*");
+        return root;
     }
 
     private String quotientRule(String input) {
@@ -183,6 +192,16 @@ public class DerivativeCalculator {
             }
         }
         return false;
+    }
+
+    private ExpressionNode copyTree(ExpressionNode root) {
+        if (root != null) {
+            ExpressionNode newNode = new ExpressionNode(root.value);
+            newNode.left = copyTree(root.left);
+            newNode.right = copyTree(root.right);
+            return newNode;
+        }
+        return root;
     }
     // binary expression tree
     //
@@ -200,7 +219,13 @@ public class DerivativeCalculator {
             this.value = value;
 
         }
+
+        public ExpressionNode(ExpressionNode left, ExpressionNode right, String value) {
+            this.left = left;
+            this.right = right;
+            this.value = value;
+        }
+
     }
 
 }
-
