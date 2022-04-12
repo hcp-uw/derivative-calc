@@ -12,6 +12,8 @@ public class DerivativeCalculator {
         this.var = var;
     }
     //  worry about input later
+
+    // this is a testing function, ignore
     public ExpressionNode TestDerivative(String s) {
         ExpressionNode root = makeTree(s);
         root = derive(root);
@@ -132,10 +134,18 @@ public class DerivativeCalculator {
      */
 
 
-    private String powerRule(String input) {
+    private ExpressionNode powerRule(ExpressionNode root) {
+        ExpressionNode firstNode = new ExpressionNode("*");
+        ExpressionNode exponent = new ExpressionNode(root.right.value);
 
-        return "";
-
+        root.right = new ExpressionNode("-", root.right.value, "1");
+        ExpressionNode baseCopy = copyTree(root.left);
+        firstNode.left = root;
+        firstNode.right = new ExpressionNode(derive(baseCopy), exponent, "*");
+        // right side, - 1, copy right side, make its parent a subtract, right child is 1
+        // left side, multiply by old right side
+        // also need to multiply by derivative of old left side
+        return firstNode;
     }
 
     private ExpressionNode derive(ExpressionNode root) {
@@ -182,8 +192,8 @@ public class DerivativeCalculator {
         return root;
     }
 
-    private String quotientRule(String input) {
-        return "";
+    private ExpressionNode quotientRule(ExpressionNode root) {
+        return root;
     }
     private boolean containsOperator(char str) {
         for(char operator: operators) {
