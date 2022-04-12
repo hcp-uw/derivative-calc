@@ -6,7 +6,9 @@ import java.lang.Character;
 public class DerivativeCalculator {
     private final char[] operators = {'+', '*', '-', '/', '^'};
 
-    public DerivativeCalculator() {
+    private char var;
+    public DerivativeCalculator(String var) {
+        this.var = var;
     }
     //  worry about input later
 
@@ -119,7 +121,7 @@ public class DerivativeCalculator {
     private ExpressionNode derive(ExpressionNode root) {
         if (root != null) {
             if (containsOperator(root.value.charAt(0))) {
-                    
+
             }
         }
     }
@@ -128,11 +130,45 @@ public class DerivativeCalculator {
 
 
     private String powerRule(String input) {
-        
+
         return "";
 
     }
 
+    private String derive(ExpressionNode root) {
+        if (root == null) {
+            return null;
+        }
+        if (root.value.equals(var)) {
+            return 1;
+        }
+        if (root.value.equals("+")){
+
+        }
+        if (root.value.equals("-")){
+
+        }
+        if (root.value.equals("/")){
+
+        }
+        if (root.value.equals("*")){
+
+        }
+        if (root.value.equals("+")){
+
+        }
+        if (root.value.equals("+")){
+
+        }
+        /* first print data of node */
+        System.out.print(root.key + " ");
+
+        /* then recur on left subtree */
+        derive(root.left);
+
+        /* now recur on right subtree */
+        derive(root.right);
+    }
     private String productRule(String input) {
         return "";
     }
@@ -167,3 +203,4 @@ public class DerivativeCalculator {
     }
 
 }
+
