@@ -138,7 +138,7 @@ public class DerivativeCalculator {
         ExpressionNode firstNode = new ExpressionNode("*");
         ExpressionNode exponent = new ExpressionNode(root.right.value);
 
-        root.right = new ExpressionNode("1", root.right.value, "1");
+        root.right = new ExpressionNode( root.right.value,"1", "-");
         ExpressionNode baseCopy = copyTree(root.left);
         firstNode.left = root;
         firstNode.right = new ExpressionNode(derive(baseCopy), exponent, "*");
@@ -263,7 +263,7 @@ public class DerivativeCalculator {
             if (root.left.value.equals(root.right.value)) {
                 root.value = "0";
             }
-            else if (root.right.equals("0")) {
+            else if (root.right.value.equals("0")) {
                 root.value = root.left.value;
             }
         }
