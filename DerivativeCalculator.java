@@ -158,17 +158,16 @@ public class DerivativeCalculator {
         else if (root.value.equals("+") || root.value.equals("-")){
             root.left = derive(root.left);
             root.right = derive(root.right);
-
         }
 
         else if (root.value.equals("/")){
 
         }
         else if (root.value.equals("*")){
-            root = productRule(root);
+            root = simplify(productRule(root));
         }
         else if (root.value.equals("^")){
-            root = powerRule(root);
+            root = simplify(powerRule(root));
         }
         else {
             root.value = "0";
@@ -216,12 +215,32 @@ public class DerivativeCalculator {
             return newNode;
         }
         return root;
-    }
+    } 
+    public String toString(ExpressionNode root) {
+        String result = "";
+        if (root == null) {
+            return "";
+        }
+        root = simplify(root);
+        //result += "(" + toString(root.left);
+        result +=toString(root.left);
+        result += root.value.toString();
+        //result += toString(root.right) + ")";
+        result += toString(root.right);
+        
+        return result;
+    }   
 
     private ExpressionNode simplify(ExpressionNode root) {
         String originalValue = root.value;
+        if (root.right == null || root.left == null) {
+            return root;
+        }
         if (root.value.equals("+")) {
-            if (root.left.value.equals("0")) {
+            if (isNumeric(root.left.value) && isNumeric(root.left.value)) {
+                root.value = "" + (Integer.parseInt(root.right.value) + Integer.parseInt(root.left.value));
+            }
+            else if (root.left.value.equals("0")) {
                 root.value = root.right.value;
             }
             else if (root.right.value.equals("0")) {
@@ -260,7 +279,9 @@ public class DerivativeCalculator {
             }
         }
         else if (root.value.equals("-")) {
-            if (root.left.value.equals(root.right.value)) {
+            if (isNumeric(root.left.value) && isNumeric(root.left.value)) {
+                root.value = "" + (Integer.parseInt(root.left.value) - Integer.parseInt(root.right.value));
+            } else if (root.left.value.equals(root.right.value)) {
                 root.value = "0";
             }
             else if (root.right.value.equals("0")) {
@@ -273,6 +294,17 @@ public class DerivativeCalculator {
             root.right = null;
         }
         return root;
+    }
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
     // binary expression tree
     //
