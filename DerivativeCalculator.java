@@ -232,7 +232,7 @@ public class DerivativeCalculator {
             return "";
         }
         // System.out.println("prev" + root.value);
-        // root = simplify(root);
+        root = simplify(root);
         // System.out.println("after" + root.value);
         //result += "(" + toString(root.left);
         if (root.left != null) {
