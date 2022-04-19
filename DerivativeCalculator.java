@@ -1,4 +1,3 @@
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -163,7 +162,7 @@ public class DerivativeCalculator {
         }
 
         else if (root.value.equals("/")){
-            root = quotientRule(root);
+            root = simplify(quotientRule(root));
         }
         else if (root.value.equals("*")){
             root = productRule(root);
@@ -233,15 +232,21 @@ public class DerivativeCalculator {
         }
         // System.out.println("prev" + root.value);
         root = simplify(root);
-        // System.out.println("after" + root.value);
-        //result += "(" + toString(root.left);
-        if (root.left != null) {
-            result += "(" + toString(root.left);
-        }
-        result += root.value.toString();
-        //result += toString(root.right) + ")";
-        if (root.right != null) {
-            result += toString(root.right) +")";
+        if (isNumeric(root.value)) {
+            result += root.value;
+        }  else {
+            if (root.left != null && isNumeric(root.left.value)) {
+                result += "(" + root.left.value;
+            } else if (root.left != null) {
+                result += "(" + toString(root.left);
+            }
+            result += root.value.toString();
+            //result += toString(root.right) + ")";
+            if (root.right != null && isNumeric(root.right.value)) {
+                result += root.right.value + ")";
+            } else if (root.right != null) {
+                result += toString(root.right) +")";
+            } else 
         }
         
         return result;
@@ -251,28 +256,33 @@ public class DerivativeCalculator {
         if (root == null) {
             return null;
         }
+        root.left = simplify(root.left);
+        root.right = simplify(root.right);
         String originalValue = root.value;
         if (root.right == null || root.left == null) {
             return root;
         }
         if (root.value.equals("+")) {
-            if (isNumeric(root.left.value) && isNumeric(root.right.value)) {
+            if (root.left.value.equals("0")) {
+                root = root.right;
+            } else if (root.right.value.equals("0")) {
+                root = root.left;
+            } else if (isNumeric(root.left.value) && isNumeric(root.right.value)) {
                 root.value = "" + (Integer.parseInt(root.right.value) + Integer.parseInt(root.left.value));
             }
-            // if (root.left.value.equals("0")) {
-            //     root.value = root.right.value;
-            // }
-            // else if (root.right.value.equals("0")) {
-            //     root.value = root.left.value;
-            // }
+
         }
         else if (root.value.equals("*")) {
+            
+            // if (root.left.value.equals("0") || root.right.value.equals("0")) {
+            //     root.value = null;
+            // } else 
+            if (root.left.value.equals("0") || root.right.value.equals("0")) {
+                root.value = "0";
+            }
             if (isNumeric(root.left.value) && isNumeric(root.right.value)) {
                 root.value = "" + (Integer.parseInt(root.left.value) * Integer.parseInt(root.right.value));
             }
-            // if (root.left.value.equals("0") || root.right.value.equals("0")) {
-            //     root.value = "0";
-            // }
             // else if (root.right.value.equals("1")) {
             //     root.value = root.left.value;
             // }
@@ -281,10 +291,13 @@ public class DerivativeCalculator {
             // }
         }
         else if (root.value.equals("^")) {
+            // if (root.right.value == null || root.right.value == "0") {
+            //     root.value = "" + 1;
+            // } else 
             if (isNumeric(root.left.value) && isNumeric(root.right.value)) {
                 root.value = "" + (Math.pow(Integer.parseInt(root.left.value), Integer.parseInt(root.right.value)));
             } else if(root.right.value.equals("1")) {
-                root.value = root.left.value;
+                root = root.left;
             }
             // if (root.right.value.equals("1")) {
             //     root.value = root.left.value;
@@ -296,7 +309,7 @@ public class DerivativeCalculator {
         }
         else if (root.value.equals("/")) {
             if (root.right.value.equals("1")) {
-                root.value = root.left.value;
+                root = root.left;
             }
             else if (root.left.value.equals("0")) {
                 root.value =  "0";
@@ -317,10 +330,12 @@ public class DerivativeCalculator {
             // }
         }
         // Need a check for if both left and right are numbers, then perform operation
-        if (!originalValue.equals(root.value)) {
-            root.left = null;
-            root.right = null;
-        }
+        // if (!originalValue.equals(root.value)) {
+        //     root.left = null;
+        //     root.right = null;
+        // }
+        
+        
         return root;
     }
     public static boolean isNumeric(String strNum) {
