@@ -3,13 +3,12 @@ import java.util.Map;
 import java.util.Stack;
 import java.lang.Character;
 import java.lang.Math;
-
 public class DerivativeCalculator {
     private final char[] operators = {'+', '*', '-', '/', '^'};
 
     private char var;
     public DerivativeCalculator(char var) {
-        this.var = var;
+        this.var = var;    
     }
     //  worry about input later
 
@@ -123,18 +122,6 @@ public class DerivativeCalculator {
         return t;
     }
 
-    // this recurses through the tree
-    // should look through the code
-    /*
-    private ExpressionNode derive(ExpressionNode root) {
-        if (root != null) {
-            if (containsOperator(root.value.charAt(0))) {
-            }
-        }
-    }
-     */
-
-
     private ExpressionNode powerRule(ExpressionNode root) {
         ExpressionNode firstNode = new ExpressionNode("*");
         ExpressionNode exponent = new ExpressionNode(root.right.value);
@@ -246,13 +233,12 @@ public class DerivativeCalculator {
                 result += root.right.value + ")";
             } else if (root.right != null) {
                 result += toString(root.right) +")";
-            } else 
+            } 
         }
         
         return result;
-    }   
-
-    private ExpressionNode simplify(ExpressionNode root) {
+    } 
+    public ExpressionNode simplify(ExpressionNode root) {
         if (root == null) {
             return null;
         }
@@ -273,22 +259,12 @@ public class DerivativeCalculator {
 
         }
         else if (root.value.equals("*")) {
-            
-            // if (root.left.value.equals("0") || root.right.value.equals("0")) {
-            //     root.value = null;
-            // } else 
             if (root.left.value.equals("0") || root.right.value.equals("0")) {
                 root.value = "0";
             }
             if (isNumeric(root.left.value) && isNumeric(root.right.value)) {
                 root.value = "" + (Integer.parseInt(root.left.value) * Integer.parseInt(root.right.value));
             }
-            // else if (root.right.value.equals("1")) {
-            //     root.value = root.left.value;
-            // }
-            // else if (root.left.value.equals("1")) {
-            //     root.value = root.right.value;
-            // }
         }
         else if (root.value.equals("^")) {
             // if (root.right.value == null || root.right.value == "0") {
@@ -299,12 +275,6 @@ public class DerivativeCalculator {
             } else if(root.right.value.equals("1")) {
                 root = root.left;
             }
-            // if (root.right.value.equals("1")) {
-            //     root.value = root.left.value;
-            // }
-            // else if (root.right.value.equals("0") || root.left.value.equals("1")) {
-            //     root.value = "1";
-            // }
 
         }
         else if (root.value.equals("/")) {
@@ -322,22 +292,10 @@ public class DerivativeCalculator {
             if (isNumeric(root.left.value) && isNumeric(root.right.value)) {
                 root.value = "" + (Integer.parseInt(root.left.value) - Integer.parseInt(root.right.value));
             }
-            // if (root.left.value.equals(root.right.value)) {
-            //     root.value = "0";
-            // }
-            // else if (root.right.value.equals("0")) {
-            //     root.value = root.left.value;
-            // }
-        }
-        // Need a check for if both left and right are numbers, then perform operation
-        // if (!originalValue.equals(root.value)) {
-        //     root.left = null;
-        //     root.right = null;
-        // }
-        
-        
+        }      
         return root;
     }
+
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -348,35 +306,7 @@ public class DerivativeCalculator {
             return false;
         }
         return true;
-    }
-    // binary expression tree
-    //
-    private class ExpressionNode {
-        public ExpressionNode left;
-        public ExpressionNode right;
-        public String value;
-
-        public ExpressionNode(String value)  {
-            this.value = value;
-        }
-        public ExpressionNode(String left, String right, String value) {
-            this.left = new ExpressionNode(left);
-            this.right = new ExpressionNode(right);
-            this.value = value;
-
-        }
-
-        public ExpressionNode(ExpressionNode left, ExpressionNode right, String value) {
-            this.left = left;
-            this.right = right;
-            this.value = value;
-        }
-        public ExpressionNode(ExpressionNode left, String right, String value) {
-            this.left = left;
-            this.right =  new ExpressionNode(right);
-            this.value = value;
-        }
-
-    }
+    }      
+    
 
 }
