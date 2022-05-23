@@ -1,7 +1,8 @@
 package com.example.backend;
 
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class BackEndController {
@@ -11,10 +12,12 @@ public class BackEndController {
         this.derivativeCalculator = new DerivativeCalculator('x');
     }
 
-    @GetMapping("/derive/{equation}")
-    String derive(@PathVariable String equation) {
+    @GetMapping("/derive")
+    @ResponseBody
+    String derive(@RequestParam String equation) {
         // TODO: substitute characters for /
         ExpressionNode derivative = derivativeCalculator.TestDerivative(equation);
         return derivativeCalculator.toString(derivative);
     }
+    // http://localhost:8080/derive/?equation=3
 }
