@@ -11,6 +11,8 @@ export default function App() {
 
   async function calculate() {
     let equation = document.getElementById("equation").value;
+    equation = equation.replace("^", "_");
+    equation = equation.replace("+", "!");
     console.log(equation);
     const CALC = `derive/?equation=${equation}`;
     console.log(CALC);
