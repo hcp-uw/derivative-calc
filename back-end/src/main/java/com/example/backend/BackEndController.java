@@ -16,6 +16,8 @@ public class BackEndController {
     @ResponseBody
     String derive(@RequestParam String equation) {
         // TODO: substitute characters for /
+        equation = equation.replaceAll("_", "^");
+        equation = equation.replaceAll("!", "+");
         ExpressionNode derivative = derivativeCalculator.TestDerivative(equation);
         return derivativeCalculator.toString(derivative);
     }

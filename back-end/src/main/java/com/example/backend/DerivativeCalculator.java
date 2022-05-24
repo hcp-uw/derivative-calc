@@ -176,8 +176,9 @@ public class DerivativeCalculator {
     private ExpressionNode productRule(ExpressionNode root) {
         root.value = "+";
         ExpressionNode rootLeftHolder = copyTree(root.left);
+        ExpressionNode rootRightHolder = copyTree(root.right);
         root.left = new ExpressionNode(root.left, derive(root.right), "*");
-        root.right = new ExpressionNode(root.right, derive(rootLeftHolder), "*");
+        root.right = new ExpressionNode(rootRightHolder, derive(rootLeftHolder), "*");
         return root;
     }
 
