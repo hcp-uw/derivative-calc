@@ -1,6 +1,6 @@
+
 import {useState} from 'react';
 import axios from "axios";
-import './App.css';
 
 export default function App() {
 
@@ -34,7 +34,7 @@ export default function App() {
         name="input"
       />
       <div id="operations">
-        <button onClick={calculate}>caculate</button>
+        <button onClick={calculate}>calculate</button>
       </div>
       <p>Result: {result}</p>
       <p>{error}</p>
