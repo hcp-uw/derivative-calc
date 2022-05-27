@@ -299,6 +299,35 @@ public class DerivativeCalculator {
         return root;
     }
 
+    public String toLatex(ExpressionNode root) {
+        StringBuilder result = new StringBuilder();
+        if (isNumeric(root.value)|| root.value.matches("[a-zA-Z]+")) {
+            result.append(root.value);
+        }
+        else if (root.value.equals("+")||root.value.equals("-")||root.value.equals("*")) {
+            result.append("");
+            result.append(toLatex(root.left));
+            result.append(root.value);
+            result.append(toLatex(root.right));
+            result.append("");
+        }
+        else if (root.value.equals("/")) {
+            result.append("\\frac{");
+            result.append(toLatex(root.left));
+            result.append("}{");
+            result.append(toLatex(root.right));
+            result.append("}");
+        }
+        else if (root.value.equals("^")) {
+            result.append("{").append(toLatex(root.left));
+            result.append("^{");
+            result.append(toLatex(root.right));
+            result.append("}}");
+        }
+
+        return result.toString();
+    }
+
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;

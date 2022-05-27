@@ -15,11 +15,11 @@ public class BackEndController {
     @GetMapping("/derive")
     @ResponseBody
     String derive(@RequestParam String equation) {
-        // TODO: substitute characters for /
+        // we substitute characters for / and ^, expect ! and _ for both respectively
         equation = equation.replaceAll("_", "^");
         equation = equation.replaceAll("!", "+");
-        ExpressionNode derivative = derivativeCalculator.TestDerivative(equation);
-        return derivativeCalculator.toString(derivative);
+        ExpressionNode derivative = derivativeCalculator.simplify(derivativeCalculator.TestDerivative(equation));
+        return derivativeCalculator.toLatex(derivative);
     }
     // http://localhost:8080/derive/?equation=3
 }
