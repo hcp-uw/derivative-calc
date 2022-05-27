@@ -1,6 +1,7 @@
 
 import {useState} from 'react';
 import axios from "axios";
+import {MathJax, MathJaxContext} from "better-react-mathjax";
 
 export default function App() {
 
@@ -25,6 +26,7 @@ export default function App() {
   }
 
   return (
+    <MathJaxContext>
     <div id="container">
       <p>Derivative Calculator</p>
       <label htmlFor="equation"> Put equation</label>
@@ -38,6 +40,8 @@ export default function App() {
       </div>
       <p>Result: {result}</p>
       <p>{error}</p>
-    </div>
+      <MathJax dynamic={true}>{`\\[${result}\\]`}</MathJax>
+      </div>
+    </MathJaxContext>
   );
 }
