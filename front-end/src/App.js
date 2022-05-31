@@ -13,7 +13,7 @@ export default function App() {
   async function calculate() {
     let equation = document.getElementById("equation").value;
     equation = equation.replaceAll("^", "_");
-    equation = equation.replace("/+/g", "!");
+    equation = equation.replaceAll("+", "!");
     console.log(equation);
     const CALC = `derive/?equation=${equation}`;
     console.log(CALC);
